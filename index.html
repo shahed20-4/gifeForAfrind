@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هدية لصديقي الغالي</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* هنا سنضع كل التنسيقات والحركات */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            transition: background-color 1.5s ease, color 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* حاوية النجوم (تظهر فقط في الليل) */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* البطاقة الرئيسية */
+        .card {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1;
+            position: relative;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        /* تحية الوقت */
+        .time-greeting {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* العنوان الرئيسي */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* اسم صديقك - سيتم تعبئته لاحقاً */
+        .friend-name {
+            color: #b45f3a;
+            transition: color 0.5s ease;
+        }
+
+        /* الوصف */
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* شبكة الأزرار */
+        .feelings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+            margin: 2.5rem 0;
+        }
+
+        /* ===== زر الشعور ===== */
+        .feeling-button {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            position: relative;
+            padding: 0.8rem;
+            line-height: 1.3;
+            font-size: 0.95rem;
+            animation: breathe 4s infinite ease-in-out;
+            backdrop-filter: blur(5px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        /* تأثير التنفس الذي كتبته أنت */
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* التأثير عند الضغط (الظل الداخلي) */
+        .feeling-button:active {
+            box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.1);
+            transform: scale(0.98);
+            animation: none;
+        }
+
+        /* تأثير المرور بالماوس */
+        .feeling-button:hover {
+            transform: scale(1.05);
+            background: white;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* الإيموجي داخل الزر */
+        .button-emoji {
+            font-size: 1.8rem;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+        }
+
+        /* منطقة عرض الرسالة */
+        .message-area {
+            margin-top: 2rem;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1.3rem;
+            line-height: 1.7;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تأثير الكتابة التدريجية */
+        .typing-effect {
+            border-left: 3px solid currentColor;
+            padding-right: 5px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: currentColor; }
+            51%, 100% { border-color: transparent; }
+        }
+
+        /* رسالة عدم وجود مشاعر مختارة */
+        .empty-message {
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* التذييل */
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            text-align: center;
+        }
+
+        /* تنسيقات للشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feeling-button {
+                width: 90px;
+                height: 90px;
+                font-size: 0.8rem;
+            }
+            
+            .button-emoji {
+                font-size: 1.5rem;
+            }
+            
+            .message-area {
+                font-size: 1.1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="stars-container" id="starsContainer"></div>
+
+    <div class="card" id="mainCard">
+      
+        <div class="time-greeting" id="timeGreeting">مساء الخير</div>
+       
+        <h1>
+            هدية إلى 
+            <span class="friend-name" id="friendName">اياد</span>
+        </h1>
+        
+        <div class="subtitle" id="subtitle">
+            مساحة آمنة لكل ما تشعر به، دون كلام ولا تفسير.
+        </div>
+               
+        <div class="feelings-grid" id="feelingsGrid">
+         
+        </div>
+
+        <div class="message-area" id="messageArea">
+            <span class="empty-message">✨ اضغط على أي زر لتقرأ رسالة مخصصة ✨</span>
+        </div>
+
+        
+        <div class="footer-note" id="footerNote">أنت لست وحدك أبداً</div>
+    </div>
+
+    <script>
+      
+        const sadnessMessages = [
+            "لا تحلل حزنك الآن فقط اجلس معه قليلًا وأنا هنا، حتى بصمت",
+            "تذكير منطقي:يوم سيئ ≠ حياة سيئة.",
+            "أحيانًا الحزن مجرد زائر، وسيذهب كما جاء 🌿."
+           
+        ];
+
+        // 💤 شعور الملل
+        const boredomMessages = [
+            'تحدي 60 ثانية لديك دقيقة واحدة لتجد شيئًا مضحكًا في غرفتك.',
+            'قم الآن: غيّر مكان جلوسك. أو اشرب ماء. أو أرسل لي أول كلمة تخطر ببالك.',
+            'اكو واحد مشى مشى لكه مشمشه ههه هي لقد اخبرتك انا سيء في نكات',
+            'من يعلم ربما انا متفرغه راسلني ل نلعب شطرنج'
+            
+        ];
+
+        // 😔 شعور عدم الكفاية (ما أفعله غير كافٍ)
+        const inadequacyMessages = [
+           'لو كنت شخصًا آخر، هل كنت ستقول له إنه غير كافٍ؟ إذًا لماذا تقولها لنفسك؟',
+           'أنت تقارن نسختك المتعبة بنسخة مثالية غير موجودة.',
+           'معاييرك ترتفع أسرع من إنجازاتك. هذا لا يعني أنك فاشل، بل طموح زيادة.',
+          " أنت تحاول، وهذا وحده رائع ✨.",
+
+          "خطوة صغيرة اليوم، تساوي إنجاز كبير في المستقبل 🌸.",
+
+          "كن لطيفًا مع نفسك… فأنت إنسان يستحق الدعم 🤍."
+        ];
+
+        // 😊 شعور الفخر (إنجاز صغير)
+        const prideMessages = [
+            "انظر إلى نفسك… لقد فعلت شيئًا جيدًا اليوم! 🌟",
+
+           "أحيانًا أصغر إنجاز يستحق التصفيق 👏.",
+
+           "تفخر بنفسك، حتى لو لم يلاحظ أحد غيرك 🌿.",
+
+          "كل نجاح صغير يبني ثقة كبيرة 🌈.",
+
+          "أنت مصدر فخر… لا تنسَ ذلك ✨"
+        ];
+
+        // 🤯 شعور الإرهاق والتعب
+        const exhaustionMessages = [
+            "لو نام عقلك الآن، العالم لن ينهار.",
+            "التوقف ليس فشلًا، بل إعادة شحن.",
+            "خذ استراحة… حتى المحارب يحتاج إلى هدوء 🌙.",
+
+           "أنت تقوم بما تستطيع، وهذا كافٍ 💛.",
+
+         "أحيانًا مجرد التنفس العميق هو كل ما تحتاجه الآن 🌿.",
+
+         "دع الضغط يمر… لا تحمله وحدك 🤍.",
+
+        "كل تعب اليوم هو خطوة نحو غدٍ أفضل 🌟."
+
+        ];
+
+        // 🧠 شعور القلق والتفكير الزائد
+        const anxietyMessages = [
+            'خطوة واحدة الآن. ليس الخطة الكاملة.',
+            'الضغط لا يعني أنك متأخر. أحيانًا يعني أنك تهتم كثيرًا.',
+            "خطوة واحدة صغيرة أفضل من التفكير في كل شيء دفعة واحدة ✨.",
+
+         "خذ نفسًا عميقًا… أنت أقوى مما تعتقد 💛.",
+
+         "أحيانًا القلق مجرد صوت عابر، لا تدعه يتحكم بك 🌙."
+
+        ];
+
+     
+        const FRIEND_NAME = "اياد";
+        
+        // عناصر الصفحة
+        const starsContainer = document.getElementById('starsContainer');
+        const timeGreeting = document.getElementById('timeGreeting');
+        const footerNote = document.getElementById('footerNote');
+        const friendNameSpan = document.getElementById('friendName');
+        const messageArea = document.getElementById('messageArea');
+        const feelingsGrid = document.getElementById('feelingsGrid');
+        
+        
+        friendNameSpan.textContent = FRIEND_NAME;
+        
+        // بيانات الأزرار )
+        const feelingsData = [
+            { id: 'sadness', emoji: '💙', label: 'حزن', messageArray: sadnessMessages },
+            { id: 'boredom', emoji: '💤', label: 'ملل', messageArray: boredomMessages },
+            { id: 'inadequacy', emoji: '😔', label: 'غير كافٍ', messageArray: inadequacyMessages },
+            { id: 'pride', emoji: '😊', label: 'فخور', messageArray: prideMessages },
+            { id: 'exhaustion', emoji: '🤯', label: 'مرهق', messageArray: exhaustionMessages },
+            { id: 'anxiety', emoji: '🧠', label: 'قلق', messageArray: anxietyMessages },
+            
+            // يمكنك إضافة المزيد هنا بنفس الطريقة
+        ];
+        
+      
+        feelingsData.forEach(feeling => {
+            const button = document.createElement('button');
+            button.className = 'feeling-button';
+            button.setAttribute('data-feeling', feeling.id);
+            button.innerHTML = `
+                <span class="button-emoji">${feeling.emoji}</span>
+                <span>${feeling.label}</span>
+            `;
+            
+           
+            button.addEventListener('click', () => showMessage(feeling.messageArray));
+            
+            feelingsGrid.appendChild(button);
+        });
+            
+        let typingTimer = null;
+        let currentTypingIndex = 0;
+        let currentMessageText = '';
+        let isTyping = false;
+
+        function showMessage(messagesArray) {
+            // إذا كان هناك تأثير كتابة قيد التشغيل، نوقفه
+            if (typingTimer) {
+                clearTimeout(typingTimer);
+                typingTimer = null;
+            }
+            
+            // التحقق من وجود رسائل في المصفوفة
+            if (!messagesArray || messagesArray.length === 0) {
+                messageArea.innerHTML = '<span class="empty-message">💝 لم تكتب رسالة لهذا الشعور بعد. عد لاحقاً وأضفها 💝</span>';
+                return;
+            }
+            
+            // اختيار رسالة عشوائية من المصفوفة
+            const randomIndex = Math.floor(Math.random() * messagesArray.length);
+            const fullMessage = messagesArray[randomIndex];
+            
+            if (!fullMessage) {
+                messageArea.innerHTML = '<span class="empty-message">✨ رسالة فارغة ✨</span>';
+                return;
+            }
+            
+            // تجهيز تأثير الكتابة
+            messageArea.innerHTML = ''; // تفريغ المنطقة
+            currentMessageText = fullMessage;
+            currentTypingIndex = 0;
+            isTyping = true;
+            
+            // بدء تأثير الكتابة التدريجية
+            function typeNextChar() {
+                if (currentTypingIndex < currentMessageText.length) {
+                    messageArea.innerHTML = currentMessageText.substring(0, currentTypingIndex + 1) + '<span class="typing-effect"></span>';
+                    currentTypingIndex++;
+                    
+                    // سرعة الكتابة: عشوائية بين 50 و 150 مللي ثانية لإحساس طبيعي
+                    const nextDelay = Math.random() * 100 + 50;
+                    typingTimer = setTimeout(typeNextChar, nextDelay);
+                } else {
+                    // انتهت الكتابة
+                    messageArea.innerHTML = currentMessageText;
+                    isTyping = false;
+                    typingTimer = null;
+                }
+            }
+            
+            typeNextChar();
+        }
+
+
+        function updateBackgroundByTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            
+            // تحديد الفترة
+            let period = '';
+            let greeting = '';
+            let footerText = '';
+            let colors = {};
+            
+            // الصباح: 6 - 12
+            if (hours >= 6 && hours < 12) {
+                period = 'morning';
+                greeting = 'صباح النور ☀️';
+                footerText = 'بداية جديدة مليئة بالأمل';
+                colors = {
+                    background: '#f5e6d3',
+                    cardBg: 'rgba(255, 239, 219, 0.7)',
+                    text: '#5d3a1a',
+                    accent: '#b45f3a',
+                    starOpacity: 0
+                };
+            }
+            // الظهيرة: 12 - 17
+            else if (hours >= 12 && hours < 17) {
+                period = 'afternoon';
+                greeting = 'ظهرك مشرق 🌿';
+                footerText = 'أنت تبني شيئاً عظيماً';
+                colors = {
+                    background: '#cbe4de',
+                    cardBg: 'rgba(227, 242, 237, 0.7)',
+                    text: '#2c4a3e',
+                    accent: '#2c7a6e',
+                    starOpacity: 0
+                };
+            }
+            // المساء: 17 - 20
+            else if (hours >= 17 && hours < 20) {
+                period = 'evening';
+                greeting = 'مساء الدفء 🌅';
+                footerText = 'استعد للراحة، أنت تستحقها';
+                colors = {
+                    background: '#e6c9a8',
+                    cardBg: 'rgba(255, 235, 215, 0.7)',
+                    text: '#7b4b2d',
+                    accent: '#c97c4d',
+                    starOpacity: 0
+                };
+            }
+            // الليل: 20 - 0
+            else if (hours >= 20 && hours < 24) {
+                period = 'night';
+                greeting = 'ليلك هادئ ✨';
+                footerText = 'أحلام سعيدة يا صديق';
+                colors = {
+                    background: '#1a2f3f',
+                    cardBg: 'rgba(45, 65, 85, 0.7)',
+                    text: '#e2e8f0',
+                    accent: '#a0c0d9',
+                    starOpacity: 1
+                };
+            }
+            // آخر الليل: 0 - 6
+            else {
+                period = 'deepNight';
+                greeting = 'في عمق الليل 🌙';
+                footerText = 'حتى النجوم تنام، ارتح قليلاً';
+                colors = {
+                    background: '#0b1a2a',
+                    cardBg: 'rgba(20, 30, 45, 0.8)',
+                    text: '#cbd5e0',
+                    accent: '#7f9fbf',
+                    starOpacity: 1
+                };
+            }
+            
+            // تطبيق الألوان
+            document.body.style.backgroundColor = colors.background;
+            document.body.style.color = colors.text;
+            
+            // تحديث لون اسم الصديق
+            friendNameSpan.style.color = colors.accent;
+            
+            // تحديث خلفية البطاقة
+            const card = document.getElementById('mainCard');
+            card.style.background = colors.cardBg;
+            card.style.borderColor = `rgba(255, 255, 255, ${period.includes('night') ? 0.15 : 0.3})`;
+            
+            // تحديث النصوص
+            timeGreeting.textContent = greeting;
+            footerNote.textContent = footerText;
+            
+            // التحكم بالنجوم
+            starsContainer.style.opacity = colors.starOpacity;
+        }
+
+        // ====================================================
+        // 5. إنشاء النجوم (للخلفية الليلية)
+        // ====================================================
+        
+        function createStars() {
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // حجم عشوائي للنجمة
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // موقع عشوائي
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // تأخير عشوائي للوميض
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+      
+        createStars();
+        
+        // تحديث الخلفية فوراً
+        updateBackgroundByTime();
+   
+        setInterval(updateBackgroundByTime, 60000);
+
+      
+        window.addEventListener('load', () => {
+          
+            console.log('الموقع جاهز ليكتب صديقك رسائله 💝');
+
+        });
+        if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registered.', reg))
+      .catch(err => console.log('Service Worker registration failed:', err));
+  });
+}
+
+    </script>
+</body>
+</html>
