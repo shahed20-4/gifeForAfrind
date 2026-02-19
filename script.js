@@ -653,7 +653,7 @@ saveFadfada.onclick = function() {
     const text = fadfadaText.value.trim();
     
     if (text === '') {
-        alert('اكتب شيئاً قبل الحفظ...');
+        alert('الماذا لم تكتب هل كلام صعبك عليك');
         return;
     }
     
